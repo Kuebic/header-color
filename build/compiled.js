@@ -34,9 +34,9 @@
         run: async function(app, noteUUID) {
           const noteContent = await app.getNoteContent({ uuid: noteUUID });
           const updatedContent = addTextToHeaders(noteContent);
-          await app.setNoteContent({ uuid: noteUUID, content: updatedContent });
+          await app.replaceNoteContent({ uuid: noteUUID }, updatedContent);
           await app.alert("Headers have been updated in the note!");
-          console.debug("Updated headers");
+          console.debug("Special message to the DevTools console");
         }
       }
     }
