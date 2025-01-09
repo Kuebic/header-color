@@ -23,20 +23,23 @@
 
   // lib/core/markdownProcessor.js
   function addTextToHeaders(markdown) {
-    let currentHeaderLevel = null;
-    let currentColor = null;
-    return markdown.split("\n").map((line) => {
-      let match = line.match(/^#{1,6}\s+(.+)$/);
+    let lines = markdown.split("\n");
+    let modifiedLines = [];
+    lines.forEach((line) => {
+      let headerPattern = /^(#{1,6})\s+(.+)$/;
+      let match = line.match(headerPattern);
       if (match) {
-        let headerLevel = match[1].length;
+        let header = match[1];
         let headerContent = match[2];
-        if (headerLevel > currentHeaderLevel) {
-          currentColor = headerColors[headerLevel].cycleColor;
-        }
-        return `${line}<!-- {"cycleColor": "${currentColor}"} -->`;
+        let headerLevel = header.length;
+        let { cycleColor } = headerColors[headerLevel] || {};
+        let modifiedLine = `${header} ==${headerContent}<!-- {"cycleColor": "${cycleColor}"} -->==`;
+        modifiedLines.push(modifiedLine);
+      } else {
+        modifiedLines.push(line);
       }
-      return line;
-    }).join("\n");
+    });
+    return modifiedLines.join("\n");
   }
 
   // lib/plugin.js
