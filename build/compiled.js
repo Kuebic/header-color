@@ -7,39 +7,30 @@
 
   // lib/core/colors.js
   var headerColors = {
-    1: { cycleColor: "23" },
+    1: { hexColor: "#F5614C", cycleColor: "23" },
     // Red text
-    2: { cycleColor: "29" },
-    // Blue text
-    3: { cycleColor: "37" },
+    2: { hexColor: "#F9B68D", cycleColor: "35" },
+    // Orange text
+    3: { hexColor: "#BBE077", cycleColor: "37" }
     // Green text
-    4: { cycleColor: "11" },
-    // Yellow text
-    5: { cycleColor: "45" },
-    // Purple text
-    6: { cycleColor: "50" }
-    // Cyan text
   };
 
   // lib/core/markdownProcessor.js
   function addTextToHeaders(markdown) {
     let lines = markdown.split("\n");
-    let modifiedLines = [];
-    lines.forEach((line) => {
+    lines = lines.map((line) => {
       let headerPattern = /^(#{1,6})\s+(.+)$/;
       let match = line.match(headerPattern);
       if (match) {
         let header = match[1];
         let headerContent = match[2];
-        let headerLevel = header.length;
-        let { cycleColor } = headerColors[headerLevel] || {};
-        let modifiedLine = `${header} ==${headerContent}<!-- {"cycleColor": "${cycleColor}"} -->==`;
-        modifiedLines.push(modifiedLine);
-      } else {
-        modifiedLines.push(line);
+        let headerLevel = Math.min(header.length, 3);
+        let { hexColor, cycleColor } = headerColors[headerLevel];
+        return `${header} <mark style="color:${hexColor};">${headerContent}</mark><!-- {"cycleColor": "${cycleColor}"} -->`;
       }
+      return line;
     });
-    return modifiedLines.join("\n");
+    return lines.join("\n");
   }
 
   // lib/plugin.js
