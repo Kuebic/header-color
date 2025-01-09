@@ -26,7 +26,7 @@
         let headerContent = match[2];
         let headerLevel = Math.min(header.length, 3);
         let { hexColor, cycleColor } = headerColors[headerLevel];
-        return `${header} <mark style="color:${hexColor};">${headerContent}</mark><!-- {"cycleColor": "${cycleColor}"} -->`;
+        return `${header} <mark style="color:${hexColor};">${headerContent}<!-- {"cycleColor": "${cycleColor}"} --></mark>`;
       }
       return line;
     });
