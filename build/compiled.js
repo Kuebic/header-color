@@ -5,6 +5,22 @@
     return headerRegex.test(noteContent);
   }
 
+  // lib/core/colors.js
+  var headerColors = {
+    1: { cycleColor: "23" },
+    // Red text
+    2: { cycleColor: "29" },
+    // Blue text
+    3: { cycleColor: "37" },
+    // Green text
+    4: { cycleColor: "11" },
+    // Yellow text
+    5: { cycleColor: "45" },
+    // Purple text
+    6: { cycleColor: "50" }
+    // Cyan text
+  };
+
   // lib/core/markdownProcessor.js
   function addTextToHeaders(markdown) {
     let lines = markdown.split("\n");
@@ -15,7 +31,8 @@
         let header = match[1];
         let headerContent = match[2];
         let headerLevel = header.length;
-        return `${header} ${headerContent} (this is header ${headerLevel})`;
+        let { cycleColor } = headerColors[headerLevel] || {};
+        return `${header} ==${headerContent}<!-- {"cycleColor": "${cycleColor}"} -->==`;
       }
       return line;
     });
