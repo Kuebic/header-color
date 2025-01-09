@@ -16,7 +16,7 @@
   };
 
   // lib/core/markdownProcessor.js
-  function addTextToHeaders(markdown) {
+  function addColorToHeaders(markdown) {
     let lines = markdown.split("\n");
     lines = lines.map((line) => {
       let headerPattern = /^(#{1,6})\s+(.+)$/;
@@ -44,7 +44,7 @@
         },
         run: async function(app, noteUUID) {
           const noteContent = await app.getNoteContent({ uuid: noteUUID });
-          const updatedContent = addTextToHeaders(noteContent);
+          const updatedContent = addColorToHeaders(noteContent);
           await app.replaceNoteContent({ uuid: noteUUID }, updatedContent);
           await app.alert("Headers have been updated in the note!");
           console.debug("Special message to the DevTools console");
